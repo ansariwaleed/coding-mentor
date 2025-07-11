@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        /* Modern Minimal Dark Theme Variables (Less Vibrant) */
+        :root {
+            --background-dark: #0d0d0d; /* Even deeper dark background */
+            --surface-dark: #1a1a1a;   /* Darker surface for modules */
+            --text-primary-dark: #e0e0e0;
+            --text-secondary-dark: #888888; /* More subdued secondary text */
+            --accent-blue-dark: #5c88c7; /* Desaturated blue */
+            --accent-green-dark: #6a9b7a; /* Desaturated green */
+            --accent-orange-dark: #c2995c; /* Desaturated orange */
+            --accent-red-dark: #b86e6e;  /* Desaturated red */
+            --border-dark: #2a2a2a;    /* Subtle border */
+            --shadow-dark: rgba(0, 0, 0, 0.4); /* Softer shadow */
+            --focus-ring: #5c88c7; /* Consistent focus indicator */
+            --font-family-primary: 'Inter', -apple-system, BlinkMacMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            --font-family-monospace: 'Fira Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace; /* Code-like font */
+        }
+
+        body {
+            width: 350px; /* Reduced width */
+            min-height: 450px; /* Reduced min-height */
+            font-family: var(--font-family-primary);
+            margin: 0;
+            padding: 15px; /* Slightly reduced padding */
+            background: var(--background-dark);
+            color: var(--text-primary-dark);
+            display: flex;
+            flex-direction: column;
+            gap: 14px; /* Slightly reduced gap */
+        }
+
+        /* Module Styling */
+        .module {
+            background: var(--surface-dark);
+            border-radius: 10px;
+            padding: 18px; /* Slightly reduced padding */
+            box-shadow: 0 4px 8px var(--shadow-dark);
+            border: 1px solid var(--border-dark);
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 8px; /* Slightly reduced margin */
+        }
+
+        .header h1 {
+            color: var(--accent-blue-dark);
+            font-size: 20px; /* Slightly smaller font size */
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /* Removed gap as there's no icon */
+            font-weight: 600;
+        }
+
+        /* Removed .header h1::before rule */
+
+        /* Mode Selector */
+        .mode-selector {
+            display: flex;
+            margin-bottom: 14px; /* Slightly reduced margin */
+            border-radius: 8px;
+            overflow: hidden;
+            background: var(--border-dark);
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
+        }
+
+        .mode-btn {
+            flex: 1;
+            padding: 12px 10px; /* Slightly reduced padding */
+            border: none;
+            background: transparent;
+            color: var(--text-secondary-dark);
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            font-size: 14px; /* Slightly smaller font size */
+            outline: none;
+        }
+
+        .mode-btn.active {
+            background: var(--accent-blue-dark);
+            color: white;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        .mode-btn:hover:not(.active) {
+            background: #222222;
+            color: var(--text-primary-dark);
+        }
+
+        .mode-btn:focus-visible {
+            box-shadow: 0 0 0 2px var(--focus-ring);
+        }
+
+        /* API Key Section */
+        .api-key-section input {
+            width: 100%;
+            padding: 10px 12px; /* Slightly reduced padding */
+            border: 1px solid var(--border-dark);
+            border-radius: 6px;
+            font-size: 14px; /* Slightly smaller font size */
+            box-sizing: border-box;
+            background: #222222;
+            color: var(--text-primary-dark);
+            margin-bottom: 8px; /* Slightly reduced margin */
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .api-key-section input::placeholder {
+            color: var(--text-secondary-dark);
+            opacity: 0.6;
+        }
+
+        .api-key-section input:focus {
+            border-color: var(--focus-ring);
+            box-shadow: 0 0 0 2px rgba(92, 136, 199, 0.3);
+        }
+
+        .api-key-section button {
+            width: 100%;
+            padding: 10px 14px; /* Slightly reduced padding */
+            background: var(--accent-green-dark);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px; /* Slightly smaller font size */
+            font-weight: 600;
+            transition: background 0.2s ease, transform 0.1s ease;
+            outline: none;
+        }
+
+        .api-key-section button:hover {
+            background: #5e8a6d;
+        }
+
+        .api-key-section button:active {
+            transform: translateY(1px);
+        }
+
+        .api-key-section button:focus-visible {
+            box-shadow: 0 0 0 2px var(--focus-ring);
+        }
+
+        /* Question Section */
+        .question-display {
+            background: #1f1f1f;
+            border-radius: 8px;
+            padding: 16px; /* Slightly reduced padding */
+            margin-bottom: 10px; /* Slightly reduced margin */
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.3);
+            max-height: 120px; /* Slightly reduced max-height */
+            overflow-y: auto;
+            border: 1px solid var(--border-dark);
+            line-height: 1.6;
+            color: var(--text-primary-dark);
+            font-size: 13px; /* Slightly smaller font size */
+            font-family: var(--font-family-monospace);
+            white-space: pre-wrap;
+        }
+
+        .question-display.empty {
+            color: var(--text-secondary-dark);
+            font-style: italic;
+            text-align: center;
+            padding: 18px; /* Slightly reduced padding */
+            font-family: var(--font-family-primary);
+        }
+
+        .manual-input {
+            width: 100%;
+            padding: 10px 12px; /* Slightly reduced padding */
+            border: 1px solid var(--border-dark);
+            border-radius: 6px;
+            font-size: 13px; /* Slightly smaller font size */
+            resize: vertical;
+            min-height: 80px; /* Slightly reduced min-height */
+            box-sizing: border-box;
+            background: #222222;
+            color: var(--text-primary-dark);
+            margin-bottom: 10px; /* Slightly reduced margin */
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            font-family: var(--font-family-monospace);
+        }
+
+        .manual-input::placeholder {
+            color: var(--text-secondary-dark);
+            opacity: 0.6;
+        }
+
+        .manual-input:focus {
+            border-color: var(--focus-ring);
+            box-shadow: 0 0 0 2px rgba(92, 136, 199, 0.3);
+        }
+
+        .extract-btn {
+            width: 100%;
+            padding: 12px; /* Slightly reduced padding */
+            background: var(--accent-blue-dark);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 15px; /* Slightly smaller font size */
+            font-weight: 600;
+            margin-bottom: 14px; /* Slightly reduced margin */
+            transition: background 0.2s ease, transform 0.1s ease;
+            outline: none;
+        }
+
+        .extract-btn:hover {
+            background: #5077b0;
+        }
+
+        .extract-btn:active {
+            transform: translateY(1px);
+        }
+
+        .extract-btn:disabled {
+            background: #3a3a3a;
+            cursor: not-allowed;
+            color: #777;
+            box-shadow: none;
+            transform: none;
+        }
+
+        /* Chat Container */
+        .chat-container {
+            background: #1f1f1f;
+            border-radius: 8px;
+            height: 200px; /* Slightly reduced height */
+            overflow-y: auto;
+            padding: 12px; /* Slightly reduced padding */
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.3);
+            margin-bottom: 14px; /* Slightly reduced margin */
+            border: 1px solid var(--border-dark);
+        }
+
+        .chat-message {
+            margin-bottom: 12px; /* Slightly reduced margin */
+            padding: 10px 14px; /* Slightly reduced padding */
+            border-radius: 16px;
+            max-width: 88%;
+            word-wrap: break-word;
+            font-size: 13px; /* Slightly smaller font size */
+            line-height: 1.6;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+            font-family: var(--font-family-monospace);
+            white-space: pre-wrap;
+        }
+
+        .chat-message.user {
+            background: var(--accent-blue-dark);
+            color: white;
+            margin-left: auto;
+            text-align: right;
+            border-bottom-right-radius: 4px;
+        }
+
+        .chat-message.assistant {
+            background: var(--accent-green-dark);
+            color: white;
+            margin-right: auto;
+            border-bottom-left-radius: 4px;
+        }
+
+        .chat-message.error {
+            background: var(--accent-red-dark);
+            color: white;
+            margin-right: auto;
+        }
+
+        /* Controls */
+        .controls {
+            display: flex;
+            gap: 8px; /* Slightly reduced gap */
+            margin-top: 8px; /* Slightly reduced margin */
+        }
+
+        .control-btn {
+            flex: 1;
+            padding: 10px; /* Slightly reduced padding */
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px; /* Slightly smaller font size */
+            font-weight: 600;
+            transition: background 0.2s ease, transform 0.1s ease;
+            outline: none;
+        }
+
+        .hint-btn {
+            background: var(--accent-orange-dark);
+            color: #333;
+        }
+
+        .hint-btn:hover {
+            background: #a88550;
+        }
+
+        .hint-btn:active {
+            transform: translateY(1px);
+        }
+
+        .hint-btn:disabled {
+            background: #3a3a3a;
+            cursor: not-allowed;
+            color: #777;
+            box-shadow: none;
+            transform: none;
+        }
+
+        .reset-btn {
+            background: #444444;
+            color: white;
+        }
+
+        .reset-btn:hover {
+            background: #555555;
+        }
+
+        .reset-btn:active {
+            transform: translateY(1px);
+        }
+
+        .clear-btn {
+            background: var(--accent-red-dark);
+            color: white;
+        }
+
+        .clear-btn:hover {
+            background: #a36161;
+        }
+
+        .clear-btn:active {
+            transform: translateY(1px);
+        }
+
+        /* Hint Level and Status */
+        .hint-level {
+            text-align: center;
+            margin-bottom: 10px; /* Slightly reduced margin */
+            font-size: 14px; /* Slightly smaller font size */
+            color: var(--text-secondary-dark);
+            padding: 8px; /* Slightly reduced padding */
+            background: #1f1f1f;
+            border-radius: 8px;
+            border: 1px solid var(--border-dark);
+            font-weight: 500;
+        }
+
+        .status {
+            text-align: center;
+            padding: 10px; /* Slightly reduced padding */
+            border-radius: 6px;
+            margin-bottom: 16px; /* Slightly reduced margin */
+            font-size: 14px; /* Slightly smaller font size */
+            font-weight: 500;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+        }
+
+        .status.success {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .status.error {
+            background: #F44336;
+            color: white;
+        }
+
+        .status.info {
+            background: #2196F3;
+            color: white;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+    <!-- Google Fonts - Inter and Fira Code/JetBrains Mono -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="header">
+        <h1>Coding Mentor</h1>
+    </div>
+
+    <div class="module api-key-section" id="apiKeySection">
+        <input type="password" id="apiKeyInput" placeholder="Enter your Google Gemini API key">
+        <button id="saveApiKey">Save API Key</button>
+    </div>
+
+    <div class="mode-selector">
+        <button class="mode-btn active" id="autoMode">Auto Extract</button>
+        <button class="mode-btn" id="manualMode">Manual Input</button>
+    </div>
+
+    <div class="status hidden" id="statusMessage"></div>
+
+    <div class="module question-section">
+        <div class="question-display empty" id="questionDisplay">
+            No question extracted yet. Click "Extract Question" to get started.
+        </div>
+        
+        <div id="autoModeControls">
+            <button class="extract-btn" id="extractBtn">Extract Question</button>
+        </div>
+        
+        <div id="manualModeControls" class="hidden">
+            <textarea class="manual-input" id="manualInput" placeholder="Enter your coding question or follow-up..."></textarea>
+            <button class="extract-btn" id="submitManualBtn">Submit Question</button>
+        </div>
+    </div>
+
+    <div class="hint-level" id="hintLevel">Ready for hints</div>
+
+    <div class="module chat-container" id="chatContainer">
+        <div class="chat-message assistant">
+            Hello! I'm your coding mentor. Extract a question or enter one manually, and I'll provide progressive hints to help you solve it step by step.
+        </div>
+    </div>
+
+    <div class="controls">
+        <button class="control-btn hint-btn" id="nextHintBtn" disabled>Next Hint</button>
+        <button class="control-btn reset-btn" id="resetHintsBtn">Reset Hints</button>
+        <button class="control-btn clear-btn" id="clearChatBtn">Clear Chat</button>
+    </div>
+
+    <script src="popup.js"></script>
+</body>
+</html>
