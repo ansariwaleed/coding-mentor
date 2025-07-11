@@ -1,4 +1,3 @@
-```
 # Coding Mentor Chrome Extension
 
 A minimalist and modern Chrome Extension designed to be your personal coding mentor, providing progressive hints and guidance without giving away the full solution. Built with the powerful Google Gemini API, this tool aims to foster better problem-solving skills for Python learners and beyond.
@@ -130,4 +129,3 @@ Contributions are welcome! If you have suggestions for features, bug fixes, or d
 ## License
 
 This project is open-source and available under the [MIT License](https://www.google.com/search?q=LICENSE)
-```
